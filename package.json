@@ -10,11 +10,13 @@
   "author": "Nand Kumar sahu",
   "license": "ISC",
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^4.21.0",
     "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.1",
     "express-validator": "^7.2.0",
     "joi": "^17.13.3",
     "method": "^2.0.0",

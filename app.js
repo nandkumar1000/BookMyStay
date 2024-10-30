@@ -2,6 +2,11 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const mongooseConnection = require('./config/mongoose.js')
+const { cookie } = require('express-validator');
+// express session
+const session = require('express-session');
+// connect-flash
+const flash = require('connect-flash');
 
 // Import schema validation for server-side validation
 const { listingSchema, reviewSchema } = require("./schema.js");
@@ -40,6 +45,29 @@ app.use(express.json());
 // Cookie parser middleware
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
+
+// using express-session
+const sessionOption = {
+  secret: 'mysupersecret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 1000 * 60 * 60 * 24 *
+      7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    httpOnly: true
+  }
+}
+app.use(session(sessionOption));
+// using flash
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+})
+
 
 // Import routes
 const listings = require("./routes/listing.js");
