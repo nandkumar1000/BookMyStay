@@ -8,6 +8,14 @@ const session = require('express-session');
 // connect-flash
 const flash = require('connect-flash');
 
+// authentication: we are using passport library
+const passport = require('passport');
+// using passport locals stratgey
+const LocalStrategy = require('passport-local');
+
+// require user
+const User = require('./model./User.js');
+
 // Import schema validation for server-side validation
 const { listingSchema, reviewSchema } = require("./schema.js");
 
@@ -62,20 +70,40 @@ app.use(session(sessionOption));
 // using flash
 app.use(flash());
 
+// using passport session
+app.use(passport.initialize());
+app.use(passport.session());
+// use static authenticate method model in LOCAL STRATGEY
+passport.use(new LocalStrategy(User.authenticate()));
+// serialize user for session
+passport.serializeUser(User.serializeUser());
+// DESERIALIZE USER FOR SESSION
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
 })
 
-
+// DEMO user for authentication route using passport
+// app.get("/demouser", async (req, res) => {
+//   let fakeuser = new User({
+//     email: "student@123gmail.com",
+//     username: "fullstack= developer"
+//   })
+//   let regisereduser = await User.register(fakeuser, "nand");
+//   res.send(regisereduser);
+// })
 // Import routes
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
+const listingsRouter = require("./routes/listing.js");
+const reviewsRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 // Using routes
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings", listingsRouter);
+app.use("/listings/:id/reviews", reviewsRouter);
+app.use("/", userRouter);
 // home route
 
 
