@@ -96,7 +96,7 @@ Ready to explore **BookMyStay** on your own machine? 🏡 Follow these steps:
 
 1. **Clone the Repository**:  
    ```bash
-   git clone https://github.com/your-username/BookMyStay.git
+   git clone https://github.com/nandkumar1000/BookMyStay.git
    ```
 
 2. **Navigate to the Project Directory**:  
