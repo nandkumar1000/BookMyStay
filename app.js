@@ -12,9 +12,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 // using passport locals stratgey
 const LocalStrategy = require('passport-local');
-
 // require user
-const User = require('./model./User.js');
+const User = require('./model/user.js');
 
 // Import schema validation for server-side validation
 const { listingSchema, reviewSchema } = require("./schema.js");
@@ -83,6 +82,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
+  res.locals.currUser = req.user;
   next();
 })
 

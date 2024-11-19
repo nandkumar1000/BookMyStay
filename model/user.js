@@ -9,8 +9,6 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true
-    // if we want to email unique so we use unique:true
-    // unique:true
   }
 });
 // adding plugin to userSchema

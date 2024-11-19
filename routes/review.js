@@ -9,22 +9,15 @@ const { listingSchema, reviewSchema } = require("../schema.js");
 // Review and Listing models
 const Review = require("../model/Review.js");
 const Listing = require("../model/Listing.js");
+const { validateReview, isLoggedIn, isReviewAuthor } = require("../middleware.js")
 
-// Validate review
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const errmsg = error.details.map((el) => el.message).join(",");
-    // Send a response instead of throwing an error directly
-    return res.status(400).json({ error: errmsg });
-  }
-  next();
-};
 
 // Create REVIEW POST ROUTE
-router.post("/", validateReview, wrapAsync(async (req, res) => {
+router.post("/", isLoggedIn, validateReview, wrapAsync(async (req, res) => {
   const { id } = req.params; // Assuming id is the listing ID
   const review = new Review(req.body.review); // Ensure req.body.review matches your input structure
+  new Review.author = req.user._id;
+  listing.review.push(newReview);
 
   await review.save(); // Save the review
 
@@ -40,7 +33,7 @@ router.post("/", validateReview, wrapAsync(async (req, res) => {
 }));
 
 // Delete review route
-router.delete("/:reviewId", wrapAsync(async (req, res) => {
+router.delete("/:reviewId", isLoggedIn, wrapAsync(async (req, res) => {
   const { id, reviewId } = req.params; // id is the listing ID, reviewId is the review ID
 
   const listing = await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
