@@ -38,6 +38,7 @@ router
     isOwner,
     wrapAsync(listingController.destroyListings) // Delete a listing
   );
+  
 
 // Route to show the form to edit a listing
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
