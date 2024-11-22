@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Review = require('./Review.js'); // Assuming Review model is correctly set up
+const { string } = require('joi');
 
 // Schema for Listing
 const ListingSchema = new mongoose.Schema({
@@ -9,15 +10,8 @@ const ListingSchema = new mongoose.Schema({
   },
   description: String,
   image: {
-    filename: {
-      type: String,
-      default: "listingimage"
-    },
-    url: {
-      type: String,
-      default: "https://images.unsplash.com/photo-1454388683759-ee76c15fee26?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aG90ZWxzfGVufDB8fDB8fHww",
-      set: (v) => v === "" ? "https://images.unsplash.com/photo-1454388683759-ee76c15fee26?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aG90ZWxzfGVufDB8fDB8fHww" : v
-    }
+    url: string,
+    filename: string,
   },
   price: Number,
   location: String,
